@@ -1,6 +1,5 @@
 import './sass/main.scss';
 import card from './templates/gallery-item.hbs';
-import API from './js/API-service';
 import Notiflix from "notiflix";
 import NewsApiService from './js/API-service';
 
@@ -12,7 +11,6 @@ const refs = {
   loadMoreBtn: document.querySelector('.load-more'),
 };
 const newsApiService = new NewsApiService();
-
 refs.searchForm.addEventListener('submit', onSearch);
 refs.loadMoreBtn.addEventListener('click', onLoadMore);
 
@@ -35,14 +33,12 @@ newsApiService.resetPage();
 
 
     try {
-        await newsApiService.fetchArticles()
+        const result = await newsApiService.fetchArticles()
         .then(data => {
         renderImgGallery(data)}
         )
-
-     Notiflix.Notify.success(`Hooray! We found ${newsApiService.fetchArticles().totalHits} images.`);
-  
-      if (newsApiService.fetchArticles().hits.length === 0) {
+     return Notiflix.Notify.success(`Hooray! We found ${result.totalHits} images.`);
+      if (result.hits.length === 0) {
         refs.loadMoreBtn.style.display = 'initial';
           Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again.");
           return;
@@ -58,12 +54,9 @@ newsApiService.resetPage();
 }
 
 
-// newsApiService.fetchArticles().then(data => {
-// renderImgGallery(data)}
-// )}
-
 async function onLoadMore() {
-newsApiService.fetchArticles().then(renderImgGallery);
+  const result = await newsApiService.fetchArticles()
+  .then(renderImgGallery);
 
 }
 

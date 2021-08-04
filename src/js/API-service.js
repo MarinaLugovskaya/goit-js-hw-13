@@ -12,7 +12,7 @@ export default class NewsApiService {
 
   }
 
-fetchArticles() {
+async fetchArticles() {
 
   return axios.get(`https://pixabay.com/api/?key=22641563-e3a9716a3c097249b8be22daf&q=${this.searchQuery}&image_type=photo&orientation=horizontal&safesearch=true&page=${this.page}&per_page=40`)
   .then(({ data }) => {
